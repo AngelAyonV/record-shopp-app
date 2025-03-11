@@ -1,9 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { ShoppingContext } from '../ShoppingContext';
 import { useNavigate } from 'react-router-dom'; //  Para redirigir
 
 const MovementsPage = () => {
   const { state, dispatch } = useContext(ShoppingContext);
+
+  // console log solo para checar los datos
+  useEffect(() => {
+    console.log(state.movements);
+  }, [state.movements]);
 
   /* //  Para redirigir a la página de edición */
   const navigate = useNavigate();
@@ -39,8 +44,8 @@ const MovementsPage = () => {
                 <strong>{movement.asunto}</strong> <br />
                 <span className="text-muted">
                   {movement.metodoPago} | {movement.categoria} | 💰{' '}
-                  <strong>${movement.monto.toFixed(2)}</strong> | 📅{' '}
-                  {movement.fecha}
+                  <strong>${parseFloat(movement.monto || 0).toFixed(2)}</strong>
+                  {'  '}| 📅 {movement.fecha}
                 </span>
               </div>
               <div className="d-flex justify-content-end mt-3">

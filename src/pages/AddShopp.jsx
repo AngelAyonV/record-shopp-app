@@ -8,6 +8,7 @@ const AddShopp = () => {
   const navigate = useNavigate();
 
   const [shop, setShop] = useState({
+    // id: null,
     asunto: '',
     metodoPago: 'TDC NU',
     categoria: 'Supermercado',
@@ -38,10 +39,19 @@ const AddShopp = () => {
       return;
     }
 
-    dispatch({
-      type: 'ADD_SHOP',
-      payload: { id: uuidv4(), ...shop, monto: parseFloat(shop.monto) },
-    });
+    if (shop.id) {
+      // 🆕 Editar compra existente (Asegurar que el monto sea un número)
+      dispatch({
+        type: 'UPDATE_SHOP',
+        payload: { ...shop, monto: parseFloat(shop.monto) },
+      });
+    } else {
+      // 🆕 Nueva compra (Convertir monto a número y generar un ID)
+      dispatch({
+        type: 'ADD_SHOP',
+        payload: { ...shop, id: uuidv4(), monto: parseFloat(shop.monto) },
+      });
+    }
 
     alert('Compra registrada correctamente.');
 
