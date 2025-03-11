@@ -83,35 +83,34 @@ const AddShopp = () => {
           </div>
 
           <div className="mb-3">
-            <label className="form-label">Método de Pago:</label>
+            <label>Método de Pago:</label>
             <select
               name="metodoPago"
-              className="form-select"
               value={shop.metodoPago}
               onChange={handleChange}
+              className="form-select"
             >
-              <option value="TDC NU">TDC NU</option>
-              <option value="TDC ML">TDC ML</option>
-              <option value="TDC BBVA">TDC BBVA</option>
-              <option value="Débito BANCOPPEL">Débito BANCOPPEL</option>
-              <option value="Efectivo">Efectivo</option>
+              {state.payMethods.map((method) => (
+                <option key={method} value={method}>
+                  {method}
+                </option>
+              ))}
             </select>
           </div>
 
           <div className="mb-3">
-            <label className="form-label">Categoría:</label>
+            <label>Categoría:</label>
             <select
               name="categoria"
-              className="form-select"
               value={shop.categoria}
               onChange={handleChange}
+              className="form-select"
             >
-              <option value="Supermercado">Supermercado</option>
-              <option value="Farmacia">Farmacia</option>
-              <option value="Viajes">Viajes</option>
-              <option value="Música">Música</option>
-              <option value="Electrónica">Electrónica</option>
-              <option value="Restaurant">Restaurant</option>
+              {state.categories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
             </select>
           </div>
 
