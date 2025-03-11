@@ -4,6 +4,15 @@ import React, { createContext, useReducer, useEffect } from 'react';
 const initialState = {
   movements: JSON.parse(localStorage.getItem('movements')) || [],
   selectedMovement: null,
+  payMethods: ['TDC NU', 'TDC ML', 'TDC BBVA', 'DEBITO BANCOPPEL', 'EFECTIVO'], // Métodos de pago
+  categories: [
+    'Supermercado',
+    'Farmacia',
+    'Viajes',
+    'Música',
+    'Electrónica',
+    'Restaurant',
+  ], //  Categorías
 };
 
 // Definir las acciones del reducer
