@@ -6,7 +6,7 @@ const MyNavbar = () => {
   const location = useLocation(); // Detecta la ruta actual
 
   return (
-    <Navbar bg="dark" variant="dark" expand="lg">
+    <Navbar style={{ backgroundColor: '#0a1931' }} variant="dark" expand="lg">
       <Container>
         <Navbar.Brand as={Link} to="/">
           💳 Mi Finanzas App
@@ -15,28 +15,28 @@ const MyNavbar = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
             <Nav.Link as={Link} to="/" active={location.pathname === '/'}>
-              Home
+              Inicio
             </Nav.Link>
             <Nav.Link
               as={Link}
               to="/addshop"
               active={location.pathname === '/addshop'}
             >
-              Add Shop
+              Agregar Compra
             </Nav.Link>
             <Nav.Link
               as={Link}
               to="/movements"
               active={location.pathname === '/movements'}
             >
-              Movements
+              Movimientos
             </Nav.Link>
             <Nav.Link
               as={Link}
               to="/settings"
               active={location.pathname === '/settings'}
             >
-              Settings
+              Configuracion
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>

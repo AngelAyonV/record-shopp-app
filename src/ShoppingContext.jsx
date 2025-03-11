@@ -3,6 +3,7 @@ import React, { createContext, useReducer, useEffect } from 'react';
 // Intentar cargar datos previos de LocalStorage
 const initialState = {
   movements: JSON.parse(localStorage.getItem('movements')) || [],
+  selectedMovement: null,
 };
 
 // Definir las acciones del reducer
@@ -21,6 +22,16 @@ const shoppingReducer = (state, action) => {
       localStorage.setItem('movements', JSON.stringify(filteredMovements)); // Guardar en LocalStorage
       return { ...state, movements: filteredMovements };
     }
+
+    case 'SET_EDIT_SHOP': //  Guardar el movimiento a editar
+      return { ...state, selectedMovement: action.payload };
+
+    case 'UPDATE_SHOP': // Editar un movimiento existente
+      const updatedList = state.movements.map((item) =>
+        item.id === action.payload.id ? action.payload : item
+      );
+      localStorage.setItem('movements', JSON.stringify(updatedList));
+      return { ...state, movements: updatedList, selectedMovement: null };
 
     default:
       return state;
