@@ -1,17 +1,27 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { ShoppingContext } from '../ShoppingContext';
+import { useNavigate } from 'react-router-dom'; // 🆕 Para redirigir después de guardar
 
 const AddShopp = () => {
-  const { dispatch } = useContext(ShoppingContext);
+  const { state, dispatch } = useContext(ShoppingContext);
+  const navigate = useNavigate();
 
   const [shop, setShop] = useState({
+    // id: null,
     asunto: '',
     metodoPago: 'TDC NU',
     categoria: 'Supermercado',
     monto: '',
     fecha: new Date().toISOString().split('T')[0],
   });
+
+  // Si hay un movimiento en edición, cargarlo en el formulario
+  useEffect(() => {
+    if (state.selectedMovement) {
+      setShop(state.selectedMovement);
+    }
+  }, [state.selectedMovement]);
 
   const handleChange = (e) => {
     setShop({ ...shop, [e.target.name]: e.target.value });
@@ -29,10 +39,19 @@ const AddShopp = () => {
       return;
     }
 
-    dispatch({
-      type: 'ADD_SHOP',
-      payload: { id: uuidv4(), ...shop, monto: parseFloat(shop.monto) },
-    });
+    if (shop.id) {
+      // 🆕 Editar compra existente (Asegurar que el monto sea un número)
+      dispatch({
+        type: 'UPDATE_SHOP',
+        payload: { ...shop, monto: parseFloat(shop.monto) },
+      });
+    } else {
+      // 🆕 Nueva compra (Convertir monto a número y generar un ID)
+      dispatch({
+        type: 'ADD_SHOP',
+        payload: { ...shop, id: uuidv4(), monto: parseFloat(shop.monto) },
+      });
+    }
 
     alert('Compra registrada correctamente.');
 
@@ -43,6 +62,7 @@ const AddShopp = () => {
       monto: '',
       fecha: new Date().toISOString().split('T')[0],
     });
+    navigate('/movements');
   };
 
   return (
