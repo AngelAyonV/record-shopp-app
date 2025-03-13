@@ -1,7 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { ShoppingContext } from '../ShoppingContext';
 import { useNavigate } from 'react-router-dom';
-import { Table, Form, Button, Container, Row, Col } from 'react-bootstrap';
+import {
+  Table,
+  Form,
+  Button,
+  Container,
+  Row,
+  Col,
+  Card,
+  ListGroup,
+} from 'react-bootstrap';
 import ExportPDF from '../components/ExportPDF';
 
 const MovementsPage = () => {
@@ -142,51 +151,61 @@ const MovementsPage = () => {
           </p>
         </div>
       ) : (
-        <Table striped bordered hover responsive="md">
-          <thead className="table-dark">
-            <tr>
-              <th>#</th>
-              <th>Asunto</th>
-              <th>Método de Pago</th>
-              <th>Categoría</th>
-              <th>Monto</th>
-              <th>Fecha</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredMovements.map((movement, index) => (
-              <tr key={movement.id}>
-                <td>{index + 1}</td>
-                <td>{movement.asunto}</td>
-                <td>{movement.metodoPago}</td>
-                <td>{movement.categoria}</td>
-                <td>${parseFloat(movement.monto || 0).toFixed(2)}</td>
-                <td>{movement.fecha}</td>
-                <td className="d-flex gap-2">
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    className="me-2"
-                    onClick={() => handleEdit(movement)}
-                  >
-                    Editar
-                  </Button>
-                  <Button
-                    className=""
-                    variant="danger"
-                    size="sm"
-                    onClick={() =>
-                      dispatch({ type: 'REMOVE_SHOP', payload: movement.id })
-                    }
-                  >
-                    Eliminar
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+        filteredMovements.map((movement) => (
+          <Card key={movement.id} className="mb-3 shadow-sm">
+            <Card.Body>
+              {/* Categoría en la parte superior */}
+              <Card.Title className="text-uppercase text-muted small">
+                {movement.categoria}
+              </Card.Title>
+
+              {/* Asunto más destacado */}
+              <Card.Subtitle className="fs-5 fw-bold">
+                {movement.asunto}
+              </Card.Subtitle>
+
+              {/* Método de pago y precio grande en negritas */}
+              <ListGroup variant="flush">
+                <ListGroup.Item className="d-flex justify-content-between align-items-center">
+                  <span className="text-muted">Método de Pago:</span>
+                  <span className="fw-bold">{movement.metodoPago}</span>
+                </ListGroup.Item>
+
+                <ListGroup.Item className="d-flex justify-content-between align-items-center">
+                  <span className="text-muted">Fecha:</span>
+                  <span>{movement.fecha}</span>
+                </ListGroup.Item>
+
+                <ListGroup.Item className="d-flex justify-content-between align-items-center">
+                  <span className="text-muted">Monto:</span>
+                  <span className="fs-4 fw-bold text-success">
+                    ${parseFloat(movement.monto || 0).toFixed(2)}
+                  </span>
+                </ListGroup.Item>
+              </ListGroup>
+
+              {/* Botones de acción */}
+              <div className="mt-3 d-flex justify-content-end gap-2">
+                <Button
+                  variant="primary"
+                  size="sm"
+                  onClick={() => handleEdit(movement)}
+                >
+                  ✏️ Editar
+                </Button>
+                <Button
+                  variant="danger"
+                  size="sm"
+                  onClick={() =>
+                    dispatch({ type: 'REMOVE_SHOP', payload: movement.id })
+                  }
+                >
+                  ❌ Eliminar
+                </Button>
+              </div>
+            </Card.Body>
+          </Card>
+        ))
       )}
     </Container>
   );
