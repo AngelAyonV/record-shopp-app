@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { ShoppingContext } from '../ShoppingContext';
 import { useNavigate } from 'react-router-dom';
 import { Table, Form, Button, Container, Row, Col } from 'react-bootstrap';
+import ExportPDF from '../components/ExportPDF';
 
 const MovementsPage = () => {
   const { state, dispatch } = useContext(ShoppingContext);
@@ -121,6 +122,9 @@ const MovementsPage = () => {
             Limpiar Filtros
           </Button>
         </Col>
+        <Col>
+          <ExportPDF movements={filteredMovements} />
+        </Col>
       </Row>
 
       {/* TABLA RESPONSIVA */}
@@ -138,7 +142,7 @@ const MovementsPage = () => {
           </p>
         </div>
       ) : (
-        <Table striped bordered hover responsive="sm">
+        <Table striped bordered hover responsive="md">
           <thead className="table-dark">
             <tr>
               <th>#</th>
@@ -159,7 +163,7 @@ const MovementsPage = () => {
                 <td>{movement.categoria}</td>
                 <td>${parseFloat(movement.monto || 0).toFixed(2)}</td>
                 <td>{movement.fecha}</td>
-                <td className="text-center">
+                <td className="d-flex gap-2">
                   <Button
                     variant="primary"
                     size="sm"
@@ -169,6 +173,7 @@ const MovementsPage = () => {
                     Editar
                   </Button>
                   <Button
+                    className=""
                     variant="danger"
                     size="sm"
                     onClick={() =>
