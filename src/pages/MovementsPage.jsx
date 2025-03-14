@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { ShoppingContext } from '../ShoppingContext';
 import { useNavigate } from 'react-router-dom';
 import {
-  Table,
   Form,
   Button,
   Container,
@@ -10,17 +9,29 @@ import {
   Col,
   Card,
   ListGroup,
+  Modal,
 } from 'react-bootstrap';
+import { FaEllipsisV } from 'react-icons/fa'; // Ícono de 3 puntos
+import { FaCog } from 'react-icons/fa'; // Ícono de engranaje (opcional)
+
 import ExportPDF from '../components/ExportPDF';
+import ModalBtn from '../components/ModalBtn';
 
 const MovementsPage = () => {
   const { state, dispatch } = useContext(ShoppingContext);
   const navigate = useNavigate();
 
-  // Log para verificar los datos
-  useEffect(() => {
-    console.log(state.movements);
-  }, [state.movements]);
+  // modal
+  const [selectedMovement, setSelectedMovement] = useState(null); // Estado para guardar el movimiento seleccionado
+  const [showModal, setShowModal] = useState(false);
+  const handleShow = (movement) => {
+    setSelectedMovement(movement); // Guardamos el movimiento al abrir el modal
+    setShowModal(true);
+  };
+  const handleClose = () => {
+    setShowModal(false);
+    setSelectedMovement(null); // Limpiamos el estado al cerrar
+  };
 
   // Estados para los filtros
   const [filterMethod, setFilterMethod] = useState(''); // Método de pago
@@ -125,8 +136,8 @@ const MovementsPage = () => {
         </Col>
       </Row>
 
-      <Row className="mb-3">
-        <Col className="text-center">
+      <Row className="mb-3 text-center">
+        <Col>
           <Button variant="secondary" onClick={clearFilters}>
             Limpiar Filtros
           </Button>
@@ -152,61 +163,65 @@ const MovementsPage = () => {
         </div>
       ) : (
         filteredMovements.map((movement) => (
-          <Card key={movement.id} className="mb-3 shadow-sm">
-            <Card.Body>
-              {/* Categoría en la parte superior */}
-              <Card.Title className="text-uppercase text-muted small">
-                {movement.categoria}
-              </Card.Title>
+          <Card key={movement.id} className="mb-2 shadow-sm">
+            <Card.Body className="p-2">
+              <div className="d-flex justify-content-between align-items-center mb-1">
+                {/* Categoría */}
+                <Card.Title
+                  className="text-uppercase text-muted small text-truncate mb-0"
+                  style={{ maxWidth: '80%' }} // 🔹 Asegura que el texto no ocupe todo el espacio
+                >
+                  {movement.categoria}
+                </Card.Title>
+
+                {/* Botón de configuración */}
+                <Button
+                  variant="light"
+                  size="sm"
+                  className="p-1"
+                  onClick={() => handleShow(movement)}
+                >
+                  <FaEllipsisV size={18} />
+                </Button>
+              </div>
 
               {/* Asunto más destacado */}
-              <Card.Subtitle className="fs-5 fw-bold">
+              <Card.Subtitle className="fs-6 fw-bold">
                 {movement.asunto}
               </Card.Subtitle>
 
-              {/* Método de pago y precio grande en negritas */}
+              {/* Método de pago y precio */}
               <ListGroup variant="flush">
-                <ListGroup.Item className="d-flex justify-content-between align-items-center">
-                  <span className="text-muted">Método de Pago:</span>
-                  <span className="fw-bold">{movement.metodoPago}</span>
+                <ListGroup.Item className="d-flex justify-content-between align-items-center py-1">
+                  <span className="text-muted small">Método de Pago:</span>
+                  <span className="fw-bold small">{movement.metodoPago}</span>
                 </ListGroup.Item>
 
-                <ListGroup.Item className="d-flex justify-content-between align-items-center">
-                  <span className="text-muted">Fecha:</span>
-                  <span>{movement.fecha}</span>
+                <ListGroup.Item className="d-flex justify-content-between align-items-center py-1">
+                  <span className="text-muted small">Fecha:</span>
+                  <span className="small">{movement.fecha}</span>
                 </ListGroup.Item>
 
-                <ListGroup.Item className="d-flex justify-content-between align-items-center">
-                  <span className="text-muted">Monto:</span>
-                  <span className="fs-4 fw-bold text-success">
+                <ListGroup.Item className="d-flex justify-content-between align-items-center py-1">
+                  <span className="text-muted small">Monto:</span>
+                  <span className="fs-6 fw-bold text-success">
                     ${parseFloat(movement.monto || 0).toFixed(2)}
                   </span>
                 </ListGroup.Item>
               </ListGroup>
-
-              {/* Botones de acción */}
-              <div className="mt-3 d-flex justify-content-end gap-2">
-                <Button
-                  variant="primary"
-                  size="sm"
-                  onClick={() => handleEdit(movement)}
-                >
-                  ✏️ Editar
-                </Button>
-                <Button
-                  variant="danger"
-                  size="sm"
-                  onClick={() =>
-                    dispatch({ type: 'REMOVE_SHOP', payload: movement.id })
-                  }
-                >
-                  ❌ Eliminar
-                </Button>
-              </div>
             </Card.Body>
           </Card>
         ))
       )}
+      {/* MODAL (Importado desde otro componente) */}
+      <ModalBtn
+        show={showModal}
+        handleClose={handleClose}
+        handleEdit={() => handleEdit(selectedMovement)}
+        handleDelete={() =>
+          dispatch({ type: 'REMOVE_SHOP', payload: selectedMovement.id })
+        }
+      />
     </Container>
   );
 };
