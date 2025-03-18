@@ -75,7 +75,7 @@ const MovementsPage = () => {
 
   return (
     <Container>
-      <h2 className="text-center my-4">Movimientos de Compras</h2>
+      <h2 className="text-center my-4">MOVIMIENTOS DE COMPRA</h2>
 
       {/* FILTROS */}
       <Row className="mb-3 g-2">

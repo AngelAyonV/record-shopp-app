@@ -4,7 +4,7 @@ import React, { createContext, useReducer, useEffect } from 'react';
 const initialState = {
   movements: JSON.parse(localStorage.getItem('movements')) || [],
   selectedMovement: null,
-  payMethods: ['TDC NU', 'TDC ML', 'TDC BBVA', 'DEBITO BANCOPPEL', 'EFECTIVO'], // Métodos de pago
+  payMethods: [ 'EFECTIVO', 'TDC NU', 'TDC ML', 'TDC BBVA', 'DEBITO BANCOPPEL'], // Métodos de pago
   categories: [
     'Supermercado',
     'Farmacia',
