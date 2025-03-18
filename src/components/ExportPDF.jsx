@@ -8,7 +8,7 @@ const ExportPDF = ({ movements }) => {
     const doc = new jsPDF();
 
     // 🏢 🔹 Datos del "Estado de Cuenta"
-    const companyName = "Mi Empresa S.A. de C.V.";
+    const companyName = "Mi Empresa S.A. de C.V. ";
     const reportTitle = "Estado de Cuenta - Movimientos de Compras";
     const generatedDate = new Date().toLocaleDateString();
     const totalTransactions = movements.length;
