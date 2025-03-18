@@ -85,7 +85,7 @@ const AddShopp = () => {
   return (
     <div className="container mt-4">
       <Card className="shadow p-3 p-md-4">
-        <h2 className="text-center mb-3">{shop.id ? "Editar Compra" : "Registrar Compra"}</h2>
+        <h2 className="text-center mb-3">{shop.id ? "EDITAR COMPRA" : "REGISTRAR COMPRA"}</h2>
         <Form noValidate validated={validated} onSubmit={handleSubmit}>
           <Row className="mb-3">
             {/* Asunto */}
